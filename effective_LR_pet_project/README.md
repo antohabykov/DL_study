@@ -1,21 +1,21 @@
-# ГИПОТЕЗА
+# HYPOTHESIS
 
-В сверточных нейронных сетях при большом количестве эпох можно избежать кросс-валидации, так как можно оптимально изменять параметры в течение обучению с помощью, так называемой, эффективной скорости обучения.
+In convolutional neural networks with a large number of epochs, cross-validation can be avoided, since it is possible to optimally change the parameters during training using the so-called effective learning rate.
 
-# ЧТО БЫЛО СДЕЛАНО
+# WHAT WAS DONE
 
-Была произведена попытка повторить эксперимент [1] Samsung AI под руководством Дмитрия Ветрова в “домашних” условиях. Предполагалось детектировать схождения скорости обучения в течение 10000 эпох к одному "эффективному" значению. Для этого использовалась эффективная скорость обучения, которая пересчитывается каждую эпоху путем деления начальной скорости обучения на текущую норму весов модели. Таким образом, чем меньше сложность модели, тем выше скорость обучения, и наоборот. Этот подход описывал Twan van Laarhoven [2]. Для реализации эксперимента был выбран базовый датасет CIFAR10 и стандартная модель resnet18, аугментация не проводилась, использовалась L2-регуляризация. Обучение проводилось на 8 наборах гиперпараметров для эффективной скорости обучения и на 8 сочетаниях optimizers & schedulars, итого: 16 наборов гиперпараметров были обучены на 10000 эпох. 
+An attempt was made to repeat the experiment [1] Samsung AI under the leadership of Dmitry Vetrov in “home” conditions. It was supposed to detect the convergence of the learning rate over 10,000 epochs to one "effective" value. For this, the effective learning rate was used, which is recalculated every epoch by dividing the initial learning rate by the current norm of the model weights. Thus, the lower the complexity of the model, the higher the learning rate, and vice versa. This approach was described by Twan van Laarhoven [2]. To implement the experiment, the CIFAR10 base dataset and the resnet18 standard model were chosen, no augmentation was carried out, L2 regularization was used. Training was carried out on 8 sets of hyperparameters for effective learning rate and on 8 combinations of optimizers & schedulars, in total: 16 sets of hyperparameters were trained for 10,000 epochs.
 
-В ходе эксперимента была получена практика в выдвижении гипотезы, дизайне эксперимента, обучении нейронных сетей на pytorch, а также визуализации и анализе данных с помощью matplotlib.
+During the experiment, practice was gained in hypothesizing, experiment design, training neural networks on pytorch, as well as visualizing and analyzing data using matplotlib.
 
-# ИНТЕРПРЕТАЦИЯ РЕЗУЛЬТАТОВ
+# INTERPRETATION OF THE RESULTS
 
-Эксперимент показал, что значения эффективной скорости обучения не сходятся к одному оптимальному значению, более того, они слабо отклоняются от инициализированных значений. "Пилообразное" поведение детектировано было, как и в эксперименте [1], но только лишь при высоких значениях начальной скорости обучения и меньшем параметре L2-регуляризации. Таким образом, эксперимент показал, что способ оптимизации скорости обучения с помощью деления её на норму весов не обладает предполагавшимся преимуществом, отсутствием необходимости к кросс-валидации, так как зависит от начальной скорости обучения и значения L2-регуляризации. Можно предположить, что при другой модели или датасете, эффект все же может быть детектирован, но это предмет изучения для других экспериментов.
+The experiment showed that the values ​​of the effective learning rate do not converge to one optimal value; moreover, they slightly deviate from the initialized values. "Sawtooth" behavior was detected, as in the experiment [1], but only at high values ​​of the initial learning rate and a smaller L2-regularization parameter. Thus, the experiment showed that the method of optimizing the learning rate by dividing it by the weight norm does not have the expected advantage, the absence of the need for cross-validation, since it depends on the initial learning rate and the value of L2 regularization. It can be assumed that with a different model or dataset, the effect can still be detected, but this is the subject of study for other experiments.
 
-Однако стоит отметить, что точность на тестовой выборке была стабильно выше, чем при случайно выбранных сочетаниях optimizer & schedular & lr & reg. Это говорит, что при ограниченных ресурсах эффективная скорость обучения может быть полезна и её можно добавлять в набор параметров для валидации. Также в нескольких экспериментах был детектирован эффект, в ходе которого точность на тестовой выборке резко падает, а после падения возрастает. Этот же эффект был показан и в вебинаре [1], правда, практическую значимость в общем случае вывести не представляется возможным, и эта детекция лишь показывает необычную природу нейросетей.
+However, it is worth noting that the accuracy on the test set was consistently higher than with randomly selected combinations of optimizer & schedular & lr & reg. This suggests that with limited resources, the effective learning rate can be useful and can be added to the validation parameter set. Also, in several experiments, an effect was detected, during which the accuracy on the test sample drops sharply, and after the fall it increases. The same effect was also shown in the webinar [1], however, it is not possible to derive practical significance in the general case, and this detection only shows the unusual nature of neural networks.
 
 
-# ССЫЛКИ
+# LINKS
 
-[1] Дмитрий Ветров, Вебинар "Необычные свойства функции потерь в глубинном обучении. Дмитрий Ветров, НИУ ВШЭ. 1 часть", ссылка: https://clck.ru/sTjkH
-[2] Twan van Laarhoven, paper: "L2 Regularization versus Batch and Weight Normalization", ссылка: https://arxiv.org/abs/1706.05350
+[1] Dmitry Vetrov, Webinar "Unusual properties of the loss function in deep learning. Dmitry Vetrov, Higher School of Economics. Part 1", link: https://clck.ru/sTjkH
+[2] Twan van Laarhoven, paper: "L2 Regularization versus Batch and Weight Normalization", ref: https://arxiv.org/abs/1706.05350
