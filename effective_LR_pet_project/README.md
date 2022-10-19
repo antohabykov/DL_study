@@ -18,4 +18,5 @@ However, it is worth noting that the accuracy on the test set was consistently h
 # LINKS
 
 [1] Dmitry Vetrov, Webinar "Unusual properties of the loss function in deep learning. Dmitry Vetrov, Higher School of Economics. Part 1", link: https://clck.ru/sTjkH
+
 [2] Twan van Laarhoven, paper: "L2 Regularization versus Batch and Weight Normalization", ref: https://arxiv.org/abs/1706.05350
